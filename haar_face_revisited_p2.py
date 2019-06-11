@@ -15,14 +15,15 @@ in_fname = sys.argv[1] # in video
 
 ### MODEL - FACE ###
 
-face_cascade_def = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-face_cascade_alt = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
-face_cascade_alt2 = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
-face_cascade_tree = cv2.CascadeClassifier('haarcascade_frontalface_alt_tree.xml')
+face_cascade = cv2.CascadeClassifier('weights/haarcascade_frontalface_default.xml')
 
-### INPUT ###
+### scaleFactor
 
-def run_with_cascade(face_cascade, out_fname, pickle_fname):
+def run_with_scaleFactor(my_scaleFactor, out_fname, pickle_fname):
+    
+    print('\nStarting with scaleFactor={}\n'.format(my_scaleFactor))
+
+    ### INPUT ###
 
     print('Input video file: ' + in_fname)
     in_video = cv2.VideoCapture(in_fname)
@@ -52,7 +53,7 @@ def run_with_cascade(face_cascade, out_fname, pickle_fname):
     
         # update counter
         frame_counter += 1
-        print('{}/{}'.format(frame_counter, frame_total))
+        # print('{}/{}'.format(frame_counter, frame_total))
         
         start = time.time()
     
@@ -60,7 +61,7 @@ def run_with_cascade(face_cascade, out_fname, pickle_fname):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
         # actually detect
-        faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+        faces = face_cascade.detectMultiScale(gray, my_scaleFactor, 5)
         
         # save coordinates/draw bounding boxes
         coords_list = []
@@ -87,8 +88,8 @@ def run_with_cascade(face_cascade, out_fname, pickle_fname):
     in_video.release()
     out_video.release()
     
-run_with_cascade(face_cascade_def, 'clip-def.avi', 'clip-def.pickle')
-run_with_cascade(face_cascade_alt, 'clip-alt.avi', 'clip-alt.pickle')
-run_with_cascade(face_cascade_alt2, 'clip-alt2.avi', 'clip-alt2.pickle')
-run_with_cascade(face_cascade_tree, 'clip-tree.avi', 'clip-tree.pickle')
-
+run_with_scaleFactor(1.03, 'clip-103.avi', 'clip-103.pickle')
+run_with_scaleFactor(1.05, 'clip-105.avi', 'clip-105.pickle')
+run_with_scaleFactor(1.08, 'clip-108.avi', 'clip-108.pickle')
+run_with_scaleFactor(1.10, 'clip-110.avi', 'clip-110.pickle')
+run_with_scaleFactor(1.15, 'clip-115.avi', 'clip-115.pickle')
